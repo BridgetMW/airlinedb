@@ -144,7 +144,7 @@ template < class T > class LinkedList
       {
       
           class Node < T > *temp = head;
-          while (head != NULL && temp->Data() != item)
+          while (temp != NULL && temp->Data() != item)
           {
       
             temp = temp->Next();
@@ -156,13 +156,13 @@ template < class T > class LinkedList
       {
       
           class Node < T > *temp = head;
-          while (head != NULL && temp->Data() != item)
+
+          while (temp != NULL)
           {
       
             (*f)(temp->Data());
             temp = temp->Next();
           }
-          return &temp->Data();
       }
 
       virtual void delete_node (T & item)

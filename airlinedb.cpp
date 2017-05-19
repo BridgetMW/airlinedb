@@ -1,6 +1,7 @@
 
 #include <string>
 #include <iostream>
+#include <stdlib.h>
 #include "LinkedList.h"
 #include "OrderedLinkedList.h"
 #include "Passenger.h"
@@ -15,16 +16,16 @@ OrderedLinkedList<Passenger> *SelectFlight(int flightNum)
 {
 
 
-    switch(fltNum) 
+    switch(flightNum) 
     {
     case 100:
-        return flight100;
+        return &flight100;
     case 200:
-        return flight200;
+        return &flight200;
     case 300:
-        return flight300;
+        return &flight300;
     case 400:
-        return flight400;
+        return &flight400;
 
     default:
         return NULL;
@@ -42,9 +43,9 @@ void PrintPassenger( Passenger &p)
 
 OrderedLinkedList<Passenger> *SelectFlight(std::string flightStr)
 
-{ int flt_num = strtol(flightStr);
+{ int flt_num = atoi(flightStr.c_str());
 
-   return SelectFlight(flight_num);
+   return SelectFlight(flt_num);
 }
 
 
@@ -52,29 +53,29 @@ int main(){
     // create lists
 
     // variables for getting user input
-    string flightNum = NULL;
-    string firstName = NAME;
-    string lastName = NAME;
-    string address = ADDRESS;
-    string phoneNum = PHONE;
-    string userInput = input;
+    string flightNum;
+    string firstName;
+    string lastName;
+    string address;
+    string phoneNum;
+    string userInput;
 
 
     // prompt user until Quit
-    cout << "Please choose an operation: << endl;
-    while (userInput != Q) {
+    cout << "Please choose an operation: " << endl;
+    while (userInput != "Q") {
         cout << "Please choose an operation: " << endl;
-        cout << "A (Add) | S (search) | D (Delete) | L (list) | Q (quit) : " endl;
-        cin >> userInput
+        cout << "A (Add) | S (search) | D (Delete) | L (list) | Q (quit) : " << endl;
+        cin >> userInput;
         
-        if (userInput == 'A')
+        if (userInput == "A")
         {
             Passenger p;
-            OrderedLinkedList *flt = NULL;
+            OrderedLinkedList<Passenger> *flt = NULL;
 
             // A -- add a passenger
             cout << "Enter flight number: ";
-            cin >> flightNum
+            cin >> flightNum;
             cout << "Enter first name: ";
             cin >> firstName;
             cout << "Enter last name: ";
@@ -86,7 +87,7 @@ int main(){
           
             // adding passenger info 
             p.FirstName(firstName);
-            p.LastName(LastName);
+            p.LastName(lastName);
             p.Address(address);
             p.Phone(phoneNum);
 
@@ -99,15 +100,15 @@ int main(){
 
             
             // add to LinkedList
-            flt->insert_node(p);
+            flt->insert(p);
         }
-        else if (userInput == 'S')
+        else if (userInput == "S")
         {
             bool done = false;
             int flt_num = 100;
             Passenger p;
-            Passenger search_rslt;
-            OrderedLinkedList *flt = NULL;
+            Passenger *search_rslt;
+            OrderedLinkedList<Passenger> *flt = NULL;
 
             // S -- search
             cout << "Enter a last name: ";
@@ -116,7 +117,7 @@ int main(){
             cin >> firstName;
 
             p.FirstName(firstName);
-            p.LastName(LastName);
+            p.LastName(lastName);
             
             
             // display flight, first & last name, address, phone
@@ -128,12 +129,12 @@ int main(){
               
                 search_rslt = flt->search(p);
                 
-                if (serch_rslt) 
+                if (search_rslt) 
                 {
                      // Print
 
                     cout << "flight: " << flt_num << endl;
-                    PrintPassenger(search_rslt);
+                    PrintPassenger(*search_rslt);
                     done = true;
                     continue;
                 }
@@ -145,8 +146,11 @@ int main(){
             }
         }
 
-        else if (userInput == 'D')
+        else if (userInput == "D")
         {
+            OrderedLinkedList<Passenger> *flt = NULL;
+            Passenger p;
+
             // D -- delete a passenger
             cout << "Enter flight number: ";
             cin >> flightNum;
@@ -158,7 +162,7 @@ int main(){
             // find and remove the passenger
             //
             p.FirstName(firstName);
-            p.LastName(LastName);
+            p.LastName(lastName);
 
             flt = SelectFlight(flightNum);
             flt->delete_node(p);
@@ -166,9 +170,9 @@ int main(){
             //
             cout << "The passenger is deleted.";
         }
-        else if (userInput == 'L')
+        else if (userInput == "L")
         {
-            OrderedLinkedList *flt = NULL;
+            OrderedLinkedList<Passenger> *flt = NULL;
 
             // L -- list passengers by flight
             cout << "Enter flight number: ";
